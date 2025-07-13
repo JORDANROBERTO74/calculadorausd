@@ -34,126 +34,32 @@ Una calculadora web moderna y funcional para calcular ganancias, comisiones y re
 ### 1. Abrir la Calculadora
 
 ```bash
-# Simplemente abre el archivo index.html en tu navegador
+npm run dev
+# or
+yarn dev
+# or
+pnpm dev
+# or
+bun dev
 ```
 
-### 2. Ingresar Datos
+Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-1. **Tipo de Cambio**: Valor actual USD/Bs (ej: 14.98)
-2. **Dólares Obtenidos**: Cantidad de USD de la venta
-3. **Pagos**: Agregar cada pago realizado en Bs
-4. **Comisión**: Porcentaje que cobra la plataforma
-5. **Ganancia Individual**: Porcentaje que te corresponde
+You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
 
-### 3. Calcular
+This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
 
-- Haz clic en "🧮 Calcular Transacción"
-- Los resultados aparecerán automáticamente
-- Scroll suave a la sección de resultados
+## Learn More
 
-### 4. Funciones Adicionales
+To learn more about Next.js, take a look at the following resources:
 
-- **📋 Cargar Ejemplo**: Usa los datos del mensaje original
-- **🗑️ Limpiar**: Borra todos los campos
-- **📄 Exportar**: Descarga resultados como archivo .txt
+- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
+- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
 
-## 📱 Responsive Design
+You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
 
-La calculadora funciona perfectamente en:
+## Deploy on Vercel
 
-- 📱 Móviles (Android/iOS)
-- 💻 Tablets
-- 🖥️ Desktop
-- 🌐 Todos los navegadores modernos
+The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
 
-## 🎯 Ejemplo de Uso
-
-### Datos de Entrada:
-
-- Tipo de cambio: 14.98 Bs/USD
-- Dólares obtenidos: 90 USD
-- Pagos: 324.12 Bs + 324.12 Bs
-- Comisión plataforma: 30%
-- Ganancia individual: 70%
-
-### Resultados Esperados:
-
-- **Total Invertido**: 648.24 Bs
-- **Total de Venta**: 1.348.20 Bs
-- **Comisión**: 404.46 Bs
-- **Ganancia Individual**: 660.62 Bs
-- **Reintegro Final**: 1.308.86 Bs
-
-## 🔧 Tecnologías Utilizadas
-
-- **HTML5**: Estructura semántica
-- **CSS3**: Diseño moderno con Flexbox y Grid
-- **JavaScript ES6+**: Lógica de cálculo y interactividad
-- **Intl API**: Formateo de moneda local
-- **CSS Grid**: Layout responsive
-- **CSS Animations**: Efectos visuales
-
-## 📁 Estructura de Archivos
-
-```
-calculadora_usd/
-├── index.html          # Estructura principal
-├── styles.css          # Estilos y diseño
-├── script.js           # Lógica y funcionalidad
-└── README.md          # Documentación
-```
-
-## 🎨 Personalización
-
-### Cambiar Colores
-
-Edita las variables CSS en `styles.css`:
-
-```css
-:root {
-  --primary-color: #3498db;
-  --success-color: #27ae60;
-  --warning-color: #f39c12;
-  --danger-color: #e74c3c;
-}
-```
-
-### Modificar Cálculos
-
-Los cálculos principales están en `script.js`:
-
-- `calcularTransaccion()`: Función principal
-- `mostrarResultados()`: Mostrar resultados
-- `validarDatos()`: Validaciones
-
-## 🚀 Instalación
-
-1. **Descarga** los archivos
-2. **Abre** `index.html` en tu navegador
-3. **¡Listo!** No requiere instalación adicional
-
-## 📝 Licencia
-
-Este proyecto es de código abierto y está disponible bajo la licencia MIT.
-
-## 🤝 Contribuciones
-
-Las contribuciones son bienvenidas. Por favor:
-
-1. Fork el proyecto
-2. Crea una rama para tu feature
-3. Commit tus cambios
-4. Push a la rama
-5. Abre un Pull Request
-
-## 📞 Soporte
-
-Si tienes preguntas o problemas:
-
-- Abre un issue en GitHub
-- Revisa la documentación
-- Contacta al desarrollador
-
----
-
-**¡Disfruta calculando tus transacciones comerciales! 💰✨**
+Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
