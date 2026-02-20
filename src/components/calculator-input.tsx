@@ -29,7 +29,7 @@ import { CalculationResult } from "@/types/calculator";
 
 interface Payment {
   id: string;
-  amount: number;
+  amount: string;
 }
 
 interface CalculatorInputProps {
@@ -38,15 +38,15 @@ interface CalculatorInputProps {
 }
 
 export default function CalculatorInput({ onCalculate, onReset }: CalculatorInputProps) {
-  const [payments, setPayments] = useState<Payment[]>([{ id: "1", amount: 0 }]);
-  const [dollarsAcquired, setDollarsAcquired] = useState<number>(0);
-  const [exchangeRate, setExchangeRate] = useState<number>(6.97);
-  const [llcCommission, setLlcCommission] = useState<number>(0);
-  const [userCommission, setUserCommission] = useState<number>(100);
+  const [payments, setPayments] = useState<Payment[]>([{ id: "1", amount: "" }]);
+  const [dollarsAcquired, setDollarsAcquired] = useState<string>("");
+  const [exchangeRate, setExchangeRate] = useState<string>("6.97");
+  const [llcCommission, setLlcCommission] = useState<string>("0");
+  const [userCommission, setUserCommission] = useState<string>("100");
   const { getP2PPrice, isLoading } = useP2PPrice();
   const paymentCounter = useRef(1);
 
-  const totalPayments = payments.reduce((sum, p) => sum + p.amount, 0);
+  const totalPayments = payments.reduce((sum, p) => sum + (parseFloat(p.amount) || 0), 0);
 
   useEffect(() => {
     handleGetP2PPrice(false);
@@ -54,7 +54,7 @@ export default function CalculatorInput({ onCalculate, onReset }: CalculatorInpu
 
   const addPayment = () => {
     paymentCounter.current += 1;
-    setPayments([...payments, { id: paymentCounter.current.toString(), amount: 0 }]);
+    setPayments([...payments, { id: paymentCounter.current.toString(), amount: "" }]);
   };
 
   const removePayment = (id: string) => {
@@ -63,7 +63,7 @@ export default function CalculatorInput({ onCalculate, onReset }: CalculatorInpu
     }
   };
 
-  const updatePayment = (id: string, amount: number) => {
+  const updatePayment = (id: string, amount: string) => {
     setPayments(
       payments.map((payment) =>
         payment.id === id ? { ...payment, amount } : payment
@@ -74,7 +74,7 @@ export default function CalculatorInput({ onCalculate, onReset }: CalculatorInpu
   const handleGetP2PPrice = async (showToast: boolean = true) => {
     const result = await getP2PPrice();
     if (result.success) {
-      setExchangeRate(Number(result.price.toFixed(2)));
+      setExchangeRate(result.price.toFixed(2));
       if (showToast) {
         toast({
           title: "Precio P2P obtenido",
@@ -93,12 +93,12 @@ export default function CalculatorInput({ onCalculate, onReset }: CalculatorInpu
   };
 
   const handleReset = () => {
-    setPayments([{ id: "1", amount: 0 }]);
+    setPayments([{ id: "1", amount: "" }]);
     paymentCounter.current = 1;
-    setDollarsAcquired(0);
-    setExchangeRate(6.97);
-    setLlcCommission(0);
-    setUserCommission(100);
+    setDollarsAcquired("");
+    setExchangeRate("6.97");
+    setLlcCommission("");
+    setUserCommission("100");
     onReset();
     handleGetP2PPrice(false);
   };
@@ -107,11 +107,13 @@ export default function CalculatorInput({ onCalculate, onReset }: CalculatorInpu
     e.preventDefault();
 
     const totalInvested = payments.reduce(
-      (sum, payment) => sum + payment.amount,
+      (sum, payment) => sum + (parseFloat(payment.amount) || 0),
       0
     );
+    const dollarsAcquiredNum = parseFloat(dollarsAcquired) || 0;
+    const exchangeRateNum = parseFloat(exchangeRate) || 0;
 
-    if (totalInvested <= 0 || dollarsAcquired <= 0 || exchangeRate <= 0) {
+    if (totalInvested <= 0 || dollarsAcquiredNum <= 0 || exchangeRateNum <= 0) {
       toast({
         title: "Error",
         description: "Por favor completa todos los campos correctamente",
@@ -120,13 +122,16 @@ export default function CalculatorInput({ onCalculate, onReset }: CalculatorInpu
       return;
     }
 
-    const finalValue = dollarsAcquired * exchangeRate;
+    const finalValue = dollarsAcquiredNum * exchangeRateNum;
     const grossProfit = finalValue - totalInvested;
 
-    const llcCommissionAmount = grossProfit * (llcCommission / 100);
+    const llcCommissionRate = parseFloat(llcCommission) || 0;
+    const userCommissionRate = parseFloat(userCommission) || 0;
+
+    const llcCommissionAmount = grossProfit * (llcCommissionRate / 100);
     const remainingAfterLLC = grossProfit - llcCommissionAmount;
 
-    const withdrawalCommission = 100 - userCommission;
+    const withdrawalCommission = 100 - userCommissionRate;
     const withdrawalCommissionAmount =
       remainingAfterLLC * (withdrawalCommission / 100);
 
@@ -137,11 +142,11 @@ export default function CalculatorInput({ onCalculate, onReset }: CalculatorInpu
 
     const result: CalculationResult = {
       totalInvested,
-      dollarsAcquired,
-      exchangeRate,
+      dollarsAcquired: dollarsAcquiredNum,
+      exchangeRate: exchangeRateNum,
       finalValue,
       grossProfit,
-      llcCommission,
+      llcCommission: llcCommissionRate,
       llcCommissionAmount,
       remainingAfterLLC,
       withdrawalCommission,
@@ -182,9 +187,9 @@ export default function CalculatorInput({ onCalculate, onReset }: CalculatorInpu
                     min="0"
                     step="0.01"
                     placeholder="Ej: 165.85"
-                    value={payment.amount || ""}
+                    value={payment.amount}
                     onChange={(e) =>
-                      updatePayment(payment.id, parseFloat(e.target.value) || 0)
+                      updatePayment(payment.id, e.target.value)
                     }
                     className="flex-1"
                   />
@@ -231,10 +236,8 @@ export default function CalculatorInput({ onCalculate, onReset }: CalculatorInpu
               min="0"
               step="0.01"
               placeholder="Ej: 23"
-              value={dollarsAcquired || ""}
-              onChange={(e) =>
-                setDollarsAcquired(parseFloat(e.target.value) || 0)
-              }
+              value={dollarsAcquired}
+              onChange={(e) => setDollarsAcquired(e.target.value)}
             />
           </div>
 
@@ -250,8 +253,8 @@ export default function CalculatorInput({ onCalculate, onReset }: CalculatorInpu
                 type="number"
                 min="0"
                 step="0.01"
-                value={exchangeRate || ""}
-                onChange={(e) => setExchangeRate(parseFloat(e.target.value) || 0)}
+                value={exchangeRate}
+                onChange={(e) => setExchangeRate(e.target.value)}
                 placeholder="Ej: 6.97"
               />
               <Button
