@@ -4,7 +4,7 @@ export default function MainContent({
   children: React.ReactNode;
 }) {
   return (
-    <main className="w-full max-w-screen flex relative">
+    <main className="w-full max-w-screen flex relative flex-1">
       {/* Background decorative elements */}
       <div className="hidden md:block absolute inset-0 w-full max-w-screen">
         <div className="absolute top-0 left-1/4 w-72 h-72 bg-gradient-to-br from-primary/20 to-primary/10 rounded-full blur-3xl"></div>
