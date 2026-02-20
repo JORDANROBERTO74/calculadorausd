@@ -34,21 +34,17 @@ export const viewport: Viewport = {
 
 interface RootLayoutProps {
   children: React.ReactNode;
-  params: {
-    locale: string;
-  };
 }
 export default async function RootLayout({
   children,
-  params: { locale },
 }: Readonly<RootLayoutProps>) {
   return (
-    <html lang={locale} suppressHydrationWarning>
+    <html lang="es" suppressHydrationWarning>
       <head>
         <meta charSet="UTF-8" />
         <link rel="icon" href="/favicon.ico" />
       </head>
-      <body className={cn("font-sans antialiased h-screen", fontSans.variable)}>
+      <body className={cn("font-sans antialiased min-h-screen flex flex-col", fontSans.variable)}>
         <ThemeProvider
           attribute="class"
           defaultTheme="light"
